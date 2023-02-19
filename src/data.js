@@ -1,4 +1,4 @@
-// Os IDs precisam ser gerados e buscados dinâmicamente, de forma que, se o usuário excluír uma tabela, as outras não crasharão.
+// Os IDs precisam ser gerados e encontrados dinâmicamente, de forma que, se o usuário excluír uma tabela, as outras não crasharão.
 // Exibir alerta quando uma tabela ou resposta não for encontrada.
 
 let initQuestion = {
@@ -96,14 +96,13 @@ let logisticsOptions = {
 let response_1 = {
     value: 'Bad luck for him!',
     desc: 'Let the customer know that this is all his problem, thanks!',
-    type: 'Type: close',
-    res: 'Entrou em reclamando mas viu que o problema era dele.',
+    type: 'closed',
     clientID: '$clientCode'
 }
 
 let response_2 = {
     value: 'The customer needs an open case!',
+    desc: 'This will be an instance where it will be closed by an administrator.',
     type: 'open',
-    res: 'Waiting for response from backoffice.',
     clientID: '$clientCode'
 }

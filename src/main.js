@@ -1,42 +1,38 @@
-// Buscar e mostrar em loop opções da nova tabela.
+const showForm = (table) => {
+    let answers     = table.answers
+    let answersQtd  = Object.keys(answers).length
 
-// Dado original virá do back-end, buscar por ID.
-function showForm(table) {
-    let answers = table.answers
-    let answersQtd = Object.keys(answers).length
-
-    let body = document.getElementById('body') // <div>
-    body.innerHTML = ''
-    let form = document.createElement('form')
-    form.action = 'POST'
-    let questionTitle = document.createElement('h1')
-    let select = document.createElement('select')
-    select.size = 20
+    let body                = document.getElementById('body') // <div>
+    body.innerHTML          = ''
+    let form                = document.createElement('form')
+    // form.action         = 'POST'
+    let questionTitle       = document.createElement('h1')
+    questionTitle.innerHTML = table.tableTitle
+    let select              = document.createElement('select')
+    select.size             = 20
 
     select.addEventListener('change', ( ) => {
         nextButton.setAttribute('onclick', 'nextQuestion(' + select.value + ')')
     })
-
-    questionTitle.innerHTML = table.tableTitle
 
     body.append(form)
     form.append(questionTitle)
     form.append(select)
 
     for(i = 0; i < answersQtd; i++) {
-        let option = document.createElement('option')
-        option.innerHTML = answers[i].value
+        let option          = document.createElement('option')
+        option.innerHTML    = answers[i].value
         // option.value = Math.floor(Date.now() * Math.random()).toString(36)
-        option.value = answers[i].id
-        option.classList = 'teste'
+        option.value        = answers[i].id
+
         select.append(option)
     }
 
-    let breakLine = document.createElement('br')
-    let nextButton = document.createElement('input')
-    nextButton.type = 'button'
-    nextButton.value = "Next"
-    nextButton.id = 'button'
+    let breakLine           = document.createElement('br')
+    let nextButton          = document.createElement('input')
+    nextButton.type         = 'button'
+    nextButton.value        = "Next"
+    nextButton.classList    = 'button'
     nextButton.setAttribute('onclick', 'nextQuestion(' + select.value + ')')
 
     body.append(breakLine)
@@ -58,8 +54,12 @@ const nextQuestion = (response) => {
         showForm(logisticsOptions)
     }
 
-    if(response == '113') {
+    if(response == '113' || response == '111' || response == '108') {
         showResponse(response_1)
+    }
+
+    if(response == '112' || response == '110' || response == '109' || response == '107' || response == '106' || response == '105') {
+        showResponse(response_2)
     }
 }
 
@@ -69,30 +69,43 @@ const clientCodeRegistration = ( ) => {
 }
 
 const showResponse = (response) => {
-    let body = document.getElementById('body') // <div>
-    body.innerHTML = ''
+    let body        = document.getElementById('body') // <div>
+    body.innerHTML  = ''
 
-    let responseTitle = document.createElement('h1')
+    let form            = document.createElement('form')
+    form.action         = 'POST'
+
+    let responseTitle       = document.createElement('h1')
     responseTitle.innerHTML = response.value
 
-    let responseDesc = document.createElement('p')
-    responseDesc.innerHTML = response.desc
+    let responseContainer   = document.createElement('div')
+    responseContainer.id    = 'response-card'
 
-    let responseType = document.createElement('p')
-    responseType.innerHTML = response.type
+    let responseDescription        = document.createElement('p')
+    responseDescription.innerHTML  = response.desc
 
-    let textArea = document.createElement('textarea')
+    let responseType        = document.createElement('p')
+    responseType.innerHTML  = 'Type of occurrence: ' + response.type
+    // responseType.classList  = 'response-type-flag'
 
-    let sendButton = document.createElement('input')
-    sendButton.type = 'button'
-    sendButton.classList = 'button'
+    let textArea            = document.createElement('textarea')
+    textArea.placeholder    = "Enter comments about the issue request and resolution."
 
-    body.append(responseTitle)
-    body.append(responseDesc)
-    // breakLine()
-    body.append(responseType)
-    body.append(textArea)
-    body.append(sendButton)
+    let breakLine           = document.createElement('br')
+    let sendButton          = document.createElement('input')
+    sendButton.type         = 'button'
+    sendButton.classList    = 'button'
+    sendButton.value        = 'Finish'
+
+    body.append(form)
+    form.append(responseTitle)
+    responseContainer.append(responseDescription)
+    responseContainer.append(responseType)
+    responseContainer.append(textArea)
+    form.append(responseContainer)
+
+    body.append(breakLine)
+    form.append(sendButton)
 }
 
 const registerRequest = ( ) => {
@@ -103,9 +116,9 @@ const registerRequest = ( ) => {
     // Caso seja aberta, outro setor fechará após dar a tratativa.
 }
 
-const breakLine = ( ) => {
+const breakTag = (parent) => {
     let breakLine = document.createElement('br')
-    body.append(breakLine)
+    parent.append(breakLine)
 }
 
 document.addEventListener('DOMContentLoaded', ( ) => {
@@ -113,5 +126,3 @@ document.addEventListener('DOMContentLoaded', ( ) => {
 })
 
 // Cada form terá um ID, e de certo modo, não importa o que o programa fará nos meios, apenas o output registrado corretamente é importante.
-
-// A aplicação será praticamente um loop básico que trará do banco de dados um formulário 0 startPoint e a partir daí, trazer o restante.
